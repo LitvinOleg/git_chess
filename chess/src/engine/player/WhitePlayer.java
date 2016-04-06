@@ -57,7 +57,7 @@ public class WhitePlayer extends Player {
                     Tile rookTile = this.board.getTile(56);
 
                     if (rookTile.isTileOccupied() && rookTile.getPiece().isFirstMove())
-                        //TODO add a catle move!
+                        //TODO add a castle move!
                         kingCastles.add(null);
             }
         }
