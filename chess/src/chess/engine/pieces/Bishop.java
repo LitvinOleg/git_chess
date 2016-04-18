@@ -20,15 +20,13 @@ public class Bishop extends Piece {
     private static final int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-9, -7, 7, 9};
 
     public Bishop(int piecePosition, Alliance pieceAlliance) {
-        super(piecePosition, pieceAlliance, PieceType.BISHOP);
+        super(piecePosition, pieceAlliance, PieceType.BISHOP, true);
     }
 
-    /**
-     * Calculates the legal moves that current bishop can make
-     *
-     * @param board - game board object
-     * @return - list of legal moves
-     */
+    public Bishop(int piecePosition, Alliance pieceAlliance, boolean isFirstMove) {
+        super(piecePosition, pieceAlliance, PieceType.BISHOP, isFirstMove);
+    }
+
     @Override
     public Collection<Move> calculateLegalMoves(Board board) {
         List<Move> legalMoves = new ArrayList<Move>();

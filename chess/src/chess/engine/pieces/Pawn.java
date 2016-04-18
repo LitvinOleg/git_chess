@@ -15,13 +15,15 @@ import static chess.engine.board.Move.*;
 /**
  * Created by Олег on 23.03.2016.
  */
-public class Pawn extends Piece
-{
+public class Pawn extends Piece {
     private final static int[] CANDIDATE_MOVE_COORDINATE = {7, 8, 9, 16};
 
-    public Pawn(int piecePosition, Alliance pieceAlliance)
-    {
-        super(piecePosition, pieceAlliance, PieceType.PAWN);
+    public Pawn(int piecePosition, Alliance pieceAlliance) {
+        super(piecePosition, pieceAlliance, PieceType.PAWN, true);
+    }
+
+    public Pawn(int piecePosition, Alliance pieceAlliance, boolean isFirstMove) {
+        super(piecePosition, pieceAlliance, PieceType.PAWN, isFirstMove);
     }
 
     /**
@@ -31,8 +33,7 @@ public class Pawn extends Piece
      * @return - list of legal moves
      */
     @Override
-    public Collection<Move> calculateLegalMoves(Board board)
-    {
+    public Collection<Move> calculateLegalMoves(Board board) {
         List<Move> legalMoves = new ArrayList<>();
 
         for (int currentCandidateOffset : CANDIDATE_MOVE_COORDINATE) {
@@ -45,12 +46,13 @@ public class Pawn extends Piece
                 //TODO more work here!!!
                 legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
             else if (currentCandidateOffset == 16 && this.isFirstMove() &&
-                    (BoardUtils.SEVENTH_RANK[this.piecePosition] && this.pieceAlliance.isBlack()) ||
-                    (BoardUtils.SECOND_RANK[this.piecePosition] && this.pieceAlliance.isWhite())) {
+                    ((BoardUtils.SEVENTH_RANK[this.piecePosition] && this.pieceAlliance.isBlack()) ||
+                            (BoardUtils.SECOND_RANK[this.piecePosition] && this.pieceAlliance.isWhite()))) {
                 int behindCandidateDestinationCoordinate = this.piecePosition + (this.pieceAlliance.getDirection() * 8);
 
                 if (!board.getTile(behindCandidateDestinationCoordinate).isTileOccupied() && !board.getTile(candidateDestinationCoordinate).isTileOccupied())
-                    legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                    legalMoves.add(new PawnJumpMove(board, this, candidateDestinationCoordinate));
+
             } else if (currentCandidateOffset == 7 && !((BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceAlliance.isWhite()) ||
                     (BoardUtils.FIRST_COLUMN[this.piecePosition]) && this.pieceAlliance.isBlack())) {
                 if (board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
@@ -58,7 +60,7 @@ public class Pawn extends Piece
 
                     if (this.pieceAlliance != pieceAtDestination.getPieceAlliance())
                         //TODO more work here!!!
-                        legalMoves.add(new AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
+                        legalMoves.add(new PawnAttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
                 }
             } else if (currentCandidateOffset == 9 && !((BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceAlliance.isBlack()) ||
                     (BoardUtils.FIRST_COLUMN[this.piecePosition]) && this.pieceAlliance.isWhite())) {
@@ -67,7 +69,7 @@ public class Pawn extends Piece
 
                     if (this.pieceAlliance != pieceAtDestination.getPieceAlliance())
                         //TODO more work here!!!
-                        legalMoves.add(new AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
+                        legalMoves.add(new PawnAttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
                 }
             }
         }
@@ -82,14 +84,12 @@ public class Pawn extends Piece
      * @return new piece
      */
     @Override
-    public Pawn movePiece(Move move)
-    {
+    public Pawn movePiece(Move move) {
         return new Pawn(move.getDestinationCoordinate(), move.getMovedPiece().getPieceAlliance());
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return PieceType.PAWN.toString();
     }
 }

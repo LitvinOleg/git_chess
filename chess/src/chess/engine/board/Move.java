@@ -13,13 +13,22 @@ public abstract class Move {
     protected final Board board;
     protected final Piece movedPiece;
     protected final int destinationCoordinate;
+    protected final boolean isFirstMove;
 
     public static final Move NULL_MOVE = new NullMove();
+
+    private Move(Board board, int destinationCoordinate) {
+        this.board = board;
+        this.movedPiece = null;
+        this.destinationCoordinate = destinationCoordinate;
+        this.isFirstMove = false;
+    }
 
     private Move(Board board, Piece movedPiece, int destinationCoordinate) {
         this.board = board;
         this.movedPiece = movedPiece;
         this.destinationCoordinate = destinationCoordinate;
+        this.isFirstMove = this.movedPiece.isFirstMove();
     }
 
     @Override
@@ -27,6 +36,7 @@ public abstract class Move {
         int result = 1;
         result = 31 * result + this.destinationCoordinate;
         result = 31 * result + this.movedPiece.hashCode();
+        result = 31 * result + this.movedPiece.getPiecePosition();
         return result;
     }
 
@@ -37,7 +47,8 @@ public abstract class Move {
         if (!(obj instanceof Move))
             return false;
         Move otherMove = (Move) obj;
-        return getDestinationCoordinate() == otherMove.getDestinationCoordinate() &&
+        return getCurrentCoordinate() == otherMove.getCurrentCoordinate() &&
+               getDestinationCoordinate() == otherMove.getDestinationCoordinate() &&
                getMovedPiece().equals(otherMove.getMovedPiece());
     }
 
@@ -74,7 +85,6 @@ public abstract class Move {
         Builder builder = new Builder();
 
         for (Piece piece : this.board.getCurrentPlayer().getActivePieces())
-            //TODO hashcode & equals for pieces!!!
             if (!this.movedPiece.equals(piece))
                 builder.setPiece(piece);
 
@@ -96,6 +106,16 @@ public abstract class Move {
                          Piece movedPiece,
                          int destinationCoordinate) {
             super(board, movedPiece, destinationCoordinate);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return this == obj || obj instanceof MajorMove && super.equals(obj);
+        }
+
+        @Override
+        public String toString() {
+            return movedPiece.getPieceType().toString() + BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
         }
     }
 

@@ -20,7 +20,11 @@ public class Rook extends Piece {
     private static final int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-8, -1, 1, 8};
 
     public Rook(int piecePosition, Alliance pieceAlliance) {
-        super(piecePosition, pieceAlliance, PieceType.ROOK);
+        super(piecePosition, pieceAlliance, PieceType.ROOK, true);
+    }
+
+    public Rook(int piecePosition, Alliance pieceAlliance, boolean isFirstMove) {
+        super(piecePosition, pieceAlliance, PieceType.ROOK, isFirstMove);
     }
 
     /**

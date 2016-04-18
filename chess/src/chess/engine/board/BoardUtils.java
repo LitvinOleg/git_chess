@@ -1,5 +1,7 @@
 package chess.engine.board;
 
+import java.util.Map;
+
 /**
  * Utils for board(game)
  */
@@ -20,6 +22,9 @@ public class BoardUtils {
 
     public static final int NUM_TILES = 64;
     public static final int NUM_TILES_PER_ROW = 8;
+
+    private static final String[] ALGEBRAIC_NOTATION = initializeAlgebraicNottion();
+    private static final Map<String, Integer> POSITION_TO_COORDINATE = initializePositionCoordinateMap();
 
     private BoardUtils() {
         throw new RuntimeException("Cannot create object of this class");
@@ -61,5 +66,13 @@ public class BoardUtils {
      */
     public static boolean isValidTileCoordinate(int coordinate) {
         return coordinate >= 0 && coordinate < NUM_TILES;
+    }
+
+    public static int getCoordinateAtPosition(String position) {
+        return POSITION_TO_COORDINATE.get(position);
+    }
+
+    public static int getPositionAtCoordinate(int coordinate) {
+        return ALGEBRAIC_NOTATION[coordinate];
     }
 }
