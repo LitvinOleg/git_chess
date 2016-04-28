@@ -13,9 +13,6 @@ import java.util.List;
 
 import static chess.engine.board.Move.*;
 
-/**
- * Created by Олег on 22.03.2016.
- */
 public class Queen extends Piece {
     private static final int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
 

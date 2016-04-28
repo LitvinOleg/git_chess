@@ -32,6 +32,10 @@ public abstract class Piece {
         return this.pieceAlliance;
     }
 
+    public int getPieceValue() {
+        return this.pieceType.getPieceValue();
+    }
+
     /**
      * The method calculates which move can do a piece in a certain situation.
      *
@@ -91,18 +95,24 @@ public abstract class Piece {
      * Piece type enums
      */
     public enum PieceType {
-        PAWN("P"),
-        KNIGHT("H"),
-        BISHOP("B"),
-        ROOK("R"),
-        QUEEN("Q"),
-        KING("K");
+        PAWN("P", 100),
+        KNIGHT("H", 300),
+        BISHOP("B", 300),
+        ROOK("R", 500),
+        QUEEN("Q", 900),
+        KING("K", 1000);
 
 
         private String pieceName;
+        private int pieceValue;
 
-        PieceType(final String pieceName) {
+        PieceType(final String pieceName, final int pieceValue) {
             this.pieceName = pieceName;
+            this.pieceValue = pieceValue;
+        }
+
+        public int getPieceValue() {
+            return this.pieceValue;
         }
 
         @Override

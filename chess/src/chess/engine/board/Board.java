@@ -8,10 +8,8 @@ import chess.engine.player.WhitePlayer;
 
 import java.util.*;
 
-/**
- * Created by Олег on 17.03.2016.
- */
 public class Board {
+
     private List<Tile> gameBoard;
     private Collection<Piece> whitePieces;
     private Collection<Piece> blackPieces;
